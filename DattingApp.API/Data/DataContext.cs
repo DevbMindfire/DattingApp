@@ -1,4 +1,4 @@
-using DattingApp.API.Controllers.Model;
+using DattingApp.API.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace DattingApp.API.Data
@@ -9,6 +9,8 @@ namespace DattingApp.API.Data
         public DataContext(DbContextOptions<DataContext> option):base(option){}
 
         public DbSet<Value> Values { get; set; }
+
+        public DbSet<User> Users { get; set; }
         
     }
 }

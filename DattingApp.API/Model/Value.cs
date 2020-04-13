@@ -1,4 +1,4 @@
-namespace DattingApp.API.Controllers.Model
+namespace DattingApp.API.Model
 {
     public class Value
     {
