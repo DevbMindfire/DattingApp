@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Dattimng App</a>
+
+  
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item active">
+      <a class="nav-link" href="#">Matches <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Lists</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Messages</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#" (click)="LoggedOut()">Logout</a>
+    </li>
+  </ul>
+
+  <div *ngIf="LoggedIn()" class="dropdown">
+    <a class="text-light">Welcome </a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" href="#">Edit profile</a>
+      <a class="dropdown-item" href="#" >Logout</a>
+    </div>
+  </div>
+
+  <form *ngIf="!LoggedIn()" #LoginForm="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)="Login()">
+    <input class="form-control mr-sm-2" type="text" placeholder="User Name" name="UserName" aria-label="User Name" required [(ngModel)]="model.UserName">
+    <input class="form-control mr-sm-2" type="password" placeholder="Password" name="Password" aria-label="Password" required [(ngModel)]="model.Password">
+    <button [disabled]="!LoginForm.valid" class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
+  </form>
+
+</nav>
