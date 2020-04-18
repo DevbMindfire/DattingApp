@@ -47,6 +47,7 @@ namespace DattingApp.API.Controllers
           [HttpPost("Login")]
           public async Task<IActionResult> Login(UserLoginDTO userLoginDTO)
           {
+              // throw new Exception("Computer say no");
 
                var userFromRepo = await _repo.Login(userLoginDTO.UserName.ToLower(), userLoginDTO.Password);
 
