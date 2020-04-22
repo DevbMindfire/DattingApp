@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
+using DattingApp.API.Model;
 
-namespace DattingApp.API.Model
+namespace DattingApp.API.DTO
 {
-    public class User
+    public class UserDetailedDTO
     {
         public int Id { get; set; }
         public string UserName { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
+        public int Age { get; set; }
         public string Gender { get; set; }
         public string KnowsAs { get; set; }
         public DateTime Created { get; set; }
@@ -17,7 +17,8 @@ namespace DattingApp.API.Model
         public string Country { get; set; }
         public string Introduction { get; set; }
         public DateTime LastActive { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public IEnumerable<Photo> Photos { get; set; }
+        public string PhotoUrls { get; set; }
+        public List<PhotoDetailedDTO> Photos { get; set; }
+
     }
 }

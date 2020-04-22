@@ -20,6 +20,7 @@ using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using DattingApp.API.Helpers;
+using AutoMapper;
 namespace DattingApp.API
 {
     public class Startup
@@ -41,7 +42,8 @@ namespace DattingApp.API
 
             //Adding Dependency injection in Auth Repository
             services.AddScoped<IAuthRepository,AuthRepository>();
-            
+            services.AddScoped<IDattingRepository,DattingRepository>();
+            services.AddAutoMapper(typeof(DattingRepository).Assembly);
             //Adding Authorisation
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options=>{

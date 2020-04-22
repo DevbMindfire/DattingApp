@@ -21,7 +21,7 @@ namespace DattingApp.API.Controllers
             this.db=_db;
         }
 
-        [AllowAnonymous]
+        
         [HttpGet]
         public IActionResult Get(){
 
