@@ -1,0 +1,84 @@
+<div class="container mt-3">
+
+  <div class="row">
+    <div class="col-sm-4">
+      <h2>Your Profile</h2>
+    </div>
+    <div class="col-sm-8">
+      <div *ngIf="EditForm.dirty" class="alert alert-info">
+        <strong>Information</strong> You have made the changes . Any unsaved changes will be lost
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-img">
+          <img src="{{user.photoUrls}}"alt="{{user.knowsAs}}" class="card-img-wrapper img-thumbnail">
+        </div>
+        <div class="card-body">
+          <div class="row  row-head">
+            Location:
+          </div>
+          <div class="row">
+            {{user.city}} , {{user.country}}
+          </div>
+          <hr>
+          <div class="row row-head">
+            Age:
+          </div>
+          <div class="row">
+            {{user.age}}
+          </div>
+          <hr>
+          <div class="row  row-head">
+            Last Active :
+          </div>
+          <div class="row">
+            {{user.lastActive}}
+          </div>
+          <hr>
+          <div class="row  row-head">
+            Member Since :
+          </div>
+          <div class="row">
+            {{user.created}}
+          </div>
+          
+        </div>
+        <div class="card-footer">
+         
+            <button [disabled]="!EditForm.dirty" form="EditForm" class="btn btn-success w-100">Save Changes</button>
+            
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <div class="tab-panel">
+        <tabset class="member-tabset">
+          <tab heading="Edit Profile">
+            <form #EditForm="ngForm" id="EditForm" (ngSubmit)="UpdateUser()">
+              <h4>Description</h4>
+              <textarea name="introduction" rows="7" [(ngModel)]="user.introduction" class="form-control"></textarea>
+              <h4>Looking for </h4>
+              <textarea name="lookingFor" rows="7" [(ngModel)]="user.lookingFor" class="form-control"></textarea>
+              <h4>Interest</h4>
+              <textarea name="interesr" rows="7" [(ngModel)]="user.interests" class="form-control"></textarea>
+              <h4>Location Details</h4>
+              <div class="form-inline">
+                <label for="city">City</label>
+                <input type="text" name="city" [(ngModel)]="user.city" class="form-control">
+                <label for="city">Country</label>
+                <input type="text" name="country" [(ngModel)]="user.country" class="form-control">
+              </div>
+            </form>
+          </tab>
+          <tab heading="Edit Photos">
+            <h4>Photos will be add here wait for it</h4>
+          </tab>
+        </tabset>
+      </div>
+    </div>
+  </div>
+
+</div>

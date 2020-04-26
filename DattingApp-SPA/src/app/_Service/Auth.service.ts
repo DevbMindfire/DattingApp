@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -9,7 +10,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthService {
 
-  private baseUrl = 'http://localhost:5000/api/Auth/';
+  private baseUrl = environment.apiUrl + 'Auth/';
   private jwtHelper = new JwtHelperService();
   decodedToken: any;
 
@@ -22,7 +23,6 @@ export class AuthService {
         if (User){
           localStorage.setItem('Token' , User.token);
           this.decodedToken = this.jwtHelper.decodeToken(User.token);
-          console.log(this.decodedToken);
         }
       })
     );

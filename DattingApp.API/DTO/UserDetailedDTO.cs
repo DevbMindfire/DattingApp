@@ -16,6 +16,7 @@ namespace DattingApp.API.DTO
         public string City { get; set; }
         public string Country { get; set; }
         public string Introduction { get; set; }
+        public string Interests { get; set; }
         public DateTime LastActive { get; set; }
         public string PhotoUrls { get; set; }
         public List<PhotoDetailedDTO> Photos { get; set; }

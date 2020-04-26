@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using DattingApp.API.DTO;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace DattingApp.API.Controllers
 {
@@ -37,6 +38,19 @@ namespace DattingApp.API.Controllers
               var user=_mapper.Map<UserDetailedDTO>(await _repository.GetUser(id.Value));
 
               return  Ok(user);
+
+          }
+          [HttpPut("{id}")]
+          public async Task<IActionResult> UpdateUser(int id,UpdateUserDTO updateUserDTO){
+               if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) return Unauthorized();
+
+               var user = await _repository.GetUser(id);
+
+               _mapper.Map(updateUserDTO,user);
+
+               if(await _repository.SaveAll()) return NoContent();
+
+               throw new System.Exception($"Updating user model on {id} failed");
 
           }
      }
