@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DattingApp.API.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace DattingApp.API.Data.Repository
 {
@@ -21,6 +22,16 @@ namespace DattingApp.API.Data.Repository
           public void Delete<T>(T entity) where T : class
           {
                _context.Remove(entity);
+          }
+
+          public async Task<Photo> GetMainPhotoFromUser(int userId)
+          {
+               return await _context.Photos.Where(use => use.UserId == userId).SingleOrDefaultAsync(p => p.IsMain);
+          }
+
+          public async Task<Photo> GetPhoto(int id)
+          {
+               return await _context.Photos.SingleOrDefaultAsync(use => use.Id ==id);
           }
 
           public async Task<User> GetUser(int id)

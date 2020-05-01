@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
+import { FileUploadModule  } from 'ng2-file-upload';
 
 import { AppComponent } from './app.component';
 import { AuthService } from './_Service/Auth.service';
@@ -28,6 +29,8 @@ import { MemeberListResolver } from './_Resolvers/Member-List.Resolver';
 import { MemberEditComponent } from './Member/Member-Edit/Member-Edit.component';
 import { MemeberEditResolver } from './_Resolvers/Member-Edit.Resolver';
 import { PreventUnsavedChanges } from './_Guard/prevent-unsaved-changes.gaurd';
+import { PhotoEditorComponent } from './Member/Photo-Editor/Photo-Editor.component';
+import { from } from 'rxjs';
 
 
 
@@ -46,7 +49,8 @@ export function TokenGetter(){
       MessageComponent,
       MemberCardComponent,
       MemberDetailComponent,
-      MemberEditComponent
+      MemberEditComponent,
+      PhotoEditorComponent
    ],
    imports: [
       BrowserModule,
@@ -56,6 +60,7 @@ export function TokenGetter(){
       BrowserAnimationsModule,
       RouterModule.forRoot(AppRoutes),
       NgxGalleryModule,
+      FileUploadModule,
       TabsModule.forRoot(),
       JwtModule.forRoot({
          config: {

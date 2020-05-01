@@ -11,6 +11,9 @@ namespace DattingApp.API.Data.Repository
          Task<User> GetUser(int id);
          Task<List<User>> GetUsers();
          Task<bool> SaveAll();
+         Task<Photo> GetPhoto(int id);
+         Task<Photo> GetMainPhotoFromUser(int userId);
+         
 
     }
 }

@@ -9,6 +9,7 @@ using DattingApp.API.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
 
 namespace DattingApp.API.Controllers
 {
@@ -18,11 +19,13 @@ namespace DattingApp.API.Controllers
      {
           private readonly IAuthRepository _repo;
           private readonly IConfiguration _config;
+          private readonly IMapper _mapper;
 
-          public AuthController(IAuthRepository repo, IConfiguration config)
+          public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
           {
                this._config = config;
                _repo = repo;
+               _mapper = mapper;
           }
 
           [HttpPost("Register")]
@@ -70,7 +73,9 @@ namespace DattingApp.API.Controllers
 
                var token=tokenHandler.CreateToken(tokenDescriptior);
 
-               return Ok(new {token=tokenHandler.WriteToken(token)});
+               var user = _mapper.Map<UserListDetailedDTO>(userFromRepo);
+
+               return Ok(new {token=tokenHandler.WriteToken(token),user});
 
           }
 

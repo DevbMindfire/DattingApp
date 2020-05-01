@@ -39,6 +39,7 @@ namespace DattingApp.API
             Options.UseSqlite(Configuration.GetConnectionString("DefaultConnectionString")));
             services.AddControllers();
             services.AddCors();
+            services.Configure<CloudinarySetting>(Configuration.GetSection("CloudinarySettings"));
 
             //Adding Dependency injection in Auth Repository
             services.AddScoped<IAuthRepository,AuthRepository>();
@@ -74,7 +75,7 @@ namespace DattingApp.API
                         var error = context.Features.Get<IExceptionHandlerFeature>();
                         if(error != null){
 
-                            context.Response.AddapplicationError(error.Error.Message);
+                            context.Response.AddApplicationError(error.Error.Message);
                             await context.Response.WriteAsync(error.Error.Message);
                         }
                     });

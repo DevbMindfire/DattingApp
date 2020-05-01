@@ -42,6 +42,7 @@ namespace DattingApp.API.Controllers
           }
           [HttpPut("{id}")]
           public async Task<IActionResult> UpdateUser(int id,UpdateUserDTO updateUserDTO){
+               
                if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) return Unauthorized();
 
                var user = await _repository.GetUser(id);
