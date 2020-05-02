@@ -24,6 +24,8 @@ namespace DattingApp.API.Helpers
 
             CreateMap<Photo, PhotoForReturnDTO>();
             CreateMap<PhotoForCreationDto, Photo>();
+            CreateMap<UserRegisterDTO, User>();
+            CreateMap<User, UserRegisterDTO>();
         }
         
     }

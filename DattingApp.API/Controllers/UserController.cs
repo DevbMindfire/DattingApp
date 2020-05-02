@@ -32,7 +32,7 @@ namespace DattingApp.API.Controllers
 
           }
 
-          [HttpGet("{id}")]
+          [HttpGet("{id}",Name="GetUser")]
           public async Task<IActionResult> GetUser(int? id){
 
               var user=_mapper.Map<UserDetailedDTO>(await _repository.GetUser(id.Value));
