@@ -6,9 +6,11 @@ using AutoMapper;
 using DattingApp.API.DTO;
 using System.Collections.Generic;
 using System.Security.Claims;
+using DattingApp.API.Helpers;
 
 namespace DattingApp.API.Controllers
 {
+     
      [Authorize]
      [ApiController]
      [Route("api/[controller]")]
@@ -32,6 +34,7 @@ namespace DattingApp.API.Controllers
 
           }
 
+          [ServiceFilter(typeof(LogUserActivity))]
           [HttpGet("{id}",Name="GetUser")]
           public async Task<IActionResult> GetUser(int? id){
 

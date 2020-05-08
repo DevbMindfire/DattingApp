@@ -26,14 +26,14 @@
             Last Active :
           </div>
           <div class="row">
-            {{user.lastActive}}
+            {{user.lastActive | timeago}}
           </div>
           <hr>
           <div class="row  row-head">
             Member Since :
           </div>
           <div class="row">
-            {{user.created}}
+            {{user.created | date}}
           </div>
           
         </div>

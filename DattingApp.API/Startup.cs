@@ -45,6 +45,8 @@ namespace DattingApp.API
             services.AddScoped<IAuthRepository,AuthRepository>();
             services.AddScoped<IDattingRepository,DattingRepository>();
             services.AddAutoMapper(typeof(DattingRepository).Assembly);
+
+            services.AddScoped<LogUserActivity>();
             //Adding Authorisation
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options=>{
