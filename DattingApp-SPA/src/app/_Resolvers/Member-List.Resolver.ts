@@ -11,8 +11,11 @@ import { catchError } from 'rxjs/operators';
 export class MemeberListResolver implements Resolve<User[]>{
      constructor(private userService: UserService, private router: Router, private alertifyService: AlertifyService){}
 
+     pageNumber = 1;
+     pageSize = 5;
+
      resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
-          return this.userService.GetUsers().pipe(
+          return this.userService.GetUsers(this.pageNumber, this.pageSize).pipe(
                catchError(error => {
                     this.alertifyService.Error('Problem retreving Data');
                     this.router.navigate(['/Home']);
@@ -20,4 +23,4 @@ export class MemeberListResolver implements Resolve<User[]>{
                })
           );
      }
-}  
+}

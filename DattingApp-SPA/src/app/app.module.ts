@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NavComponent } from './Nav/Nav.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule, PaginationModule } from 'ngx-bootstrap';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -73,7 +74,9 @@ export function TokenGetter(){
             blacklistedRoutes: ['localhost:5000/api/auth']
          }
       }),
-      TimeagoModule.forRoot()
+      TimeagoModule.forRoot(),
+      PaginationModule.forRoot(),
+      ButtonsModule.forRoot()
    ],
    providers: [
       AuthService,
