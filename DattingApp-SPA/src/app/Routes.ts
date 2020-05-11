@@ -10,6 +10,7 @@ import { MemeberListResolver } from './_Resolvers/Member-List.Resolver';
 import { MemberEditComponent } from './Member/Member-Edit/Member-Edit.component';
 import { MemeberEditResolver } from './_Resolvers/Member-Edit.Resolver';
 import { PreventUnsavedChanges } from './_Guard/prevent-unsaved-changes.gaurd';
+import { ListResolver } from './_Resolvers/List.Resolver';
 
 export const AppRoutes: Routes = [
      {path: '' , component: HomeComponent},
@@ -27,7 +28,8 @@ export const AppRoutes: Routes = [
                      resolve: {user: MemeberEditResolver},
                         canDeactivate: [PreventUnsavedChanges]},
                {path: 'Message' , component: MessageComponent},
-               {path: 'List' , component: ListComponent}
+               {path: 'List' , component: ListComponent,
+                     resolve: {users: ListResolver}}
 
           ]
      },

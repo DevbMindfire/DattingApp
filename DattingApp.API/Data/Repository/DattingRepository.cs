@@ -26,6 +26,11 @@ namespace DattingApp.API.Data.Repository
                _context.Remove(entity);
           }
 
+          public async Task<Like> GetLike(int userId, int recipientId)
+          {
+               return await _context.Likes.FirstOrDefaultAsync(use => use.LikerId == userId && use.LikeeId == recipientId);
+          }
+
           public async Task<Photo> GetMainPhotoFromUser(int userId)
           {
                return await _context.Photos.Where(use => use.UserId == userId).SingleOrDefaultAsync(p => p.IsMain);
@@ -58,6 +63,20 @@ namespace DattingApp.API.Data.Repository
 
                }
 
+               if(userParams.Likers){
+
+                    var userLikers = await GetUserLikes(userParams.UserId , true);
+                    user = user.Where(u => userLikers.Contains(u.Id));
+
+               }
+
+               if(userParams.Likees){
+
+                    var userLikees = await GetUserLikes(userParams.UserId , false);
+                    user = user.Where(u => userLikees.Contains(u.Id));
+
+               }
+
                if(!string.IsNullOrEmpty(userParams.OrderBy)){
 
                     switch(userParams.OrderBy){
@@ -78,6 +97,24 @@ namespace DattingApp.API.Data.Repository
           public async Task<bool> SaveAll()
           {
                return await _context.SaveChangesAsync() > 0;
+          }
+
+          public async Task<IEnumerable<int>> GetUserLikes(int id , bool likers){                       
+
+               if(likers){
+                    var x = await (from u in _context.Users 
+                            join l in _context.Likes on u.Id equals l.LikeeId
+                            where u.Id == id
+                            select l.LikerId).ToListAsync();
+                    return x;
+               }    
+
+               var f = await (from u in _context.Users 
+                            join l in _context.Likes on u.Id equals l.LikerId
+                            where u.Id == id
+                            select l.LikeeId).ToListAsync();
+               return f;
+
           }
      }
 }
