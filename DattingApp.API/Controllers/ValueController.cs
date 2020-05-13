@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DattingApp.API.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -24,8 +25,9 @@ namespace DattingApp.API.Controllers
         
         [HttpGet]
         public IActionResult Get(){
+            //if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) return Unauthorized();
 
-            return Ok(db.Values.ToList());
+            return Ok(User.FindFirst(ClaimTypes.NameIdentifier).Value+" just hold on");
 
         }
 

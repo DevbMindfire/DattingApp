@@ -33,8 +33,9 @@ import { MemberEditComponent } from './Member/Member-Edit/Member-Edit.component'
 import { MemeberEditResolver } from './_Resolvers/Member-Edit.Resolver';
 import { PreventUnsavedChanges } from './_Guard/prevent-unsaved-changes.gaurd';
 import { PhotoEditorComponent } from './Member/Photo-Editor/Photo-Editor.component';
-import { from } from 'rxjs';
 import { ListResolver } from './_Resolvers/List.Resolver';
+import { MessageResolver } from './_Resolvers/Message.Resolver';
+import { MemberMessageComponent } from './Member/Member-Message/Member-Message.component';
 
 
 
@@ -54,7 +55,8 @@ export function TokenGetter(){
       MemberCardComponent,
       MemberDetailComponent,
       MemberEditComponent,
-      PhotoEditorComponent
+      PhotoEditorComponent,
+      MemberMessageComponent
    ],
    imports: [
       BrowserModule,
@@ -89,7 +91,8 @@ export function TokenGetter(){
       MemeberListResolver,
       MemeberEditResolver,
       PreventUnsavedChanges,
-      ListResolver
+      ListResolver,
+      MessageResolver
    ],
    bootstrap: [
       AppComponent

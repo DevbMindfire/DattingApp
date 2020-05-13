@@ -37,7 +37,9 @@ namespace DattingApp.API
         {
             services.AddDbContext<DataContext>(Options=>
             Options.UseSqlite(Configuration.GetConnectionString("DefaultConnectionString")));
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
             services.AddCors();
             services.Configure<CloudinarySetting>(Configuration.GetSection("CloudinarySettings"));
 

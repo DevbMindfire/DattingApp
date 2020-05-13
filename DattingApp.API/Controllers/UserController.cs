@@ -13,6 +13,7 @@ namespace DattingApp.API.Controllers
 {
      
      [Authorize]
+     [ServiceFilter(typeof(LogUserActivity))]
      [ApiController]
      [Route("api/[controller]")]
      public class UserController : ControllerBase
@@ -51,7 +52,6 @@ namespace DattingApp.API.Controllers
 
           }
 
-          [ServiceFilter(typeof(LogUserActivity))]
           [HttpGet("{id}",Name="GetUser")]
           public async Task<IActionResult> GetUser(int? id){
 
