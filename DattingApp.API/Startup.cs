@@ -32,11 +32,28 @@ namespace DattingApp.API
 
         public IConfiguration Configuration { get; }
 
+        public void ConfigureDevelopmentServices(IServiceCollection services){
+            services.AddDbContext<DataContext>(Options=> {
+                Options.UseLazyLoadingProxies();
+                Options.UseSqlite(Configuration.GetConnectionString("DefaultConnectionString"));
+            }
+            );
+
+            ConfigureServices(services);
+        }
+        public void ConfigureProductionServices(IServiceCollection services){
+            services.AddDbContext<DataContext>(Options=>{
+                Options.UseLazyLoadingProxies();
+                Options.UseSqlServer(Configuration.GetConnectionString("SqlServerString"));
+            });
+
+            ConfigureServices(services);
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(Options=>
-            Options.UseSqlite(Configuration.GetConnectionString("DefaultConnectionString")));
+            
             services.AddControllers().AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
@@ -45,7 +62,7 @@ namespace DattingApp.API
 
             //Adding Dependency injection in Auth Repository
             services.AddScoped<IAuthRepository,AuthRepository>();
-            services.AddScoped<IDattingRepository,DattingRepository>();
+            services.AddScoped<IDattingRepository,DattingRepository>(); 
             services.AddAutoMapper(typeof(DattingRepository).Assembly);
 
             services.AddScoped<LogUserActivity>();
@@ -95,9 +112,13 @@ namespace DattingApp.API
 
             app.UseAuthorization();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapFallbackToController("Index","Fallback");
             });
         }
     }

@@ -19,10 +19,10 @@ namespace DattingApp.API.Model
         public string Interests{ get; set; }
         public DateTime LastActive { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public ICollection<Photo> Photos { get; set; }
-        public ICollection<Like> Likers { get; set; }
-        public ICollection<Like> Likees { get; set; }
-        public ICollection<Message> MessagesSent { get; set; }
-        public ICollection<Message> MessagesRecieved { get; set; }
+        public virtual ICollection<Photo> Photos { get; set; }
+        public virtual ICollection<Like> Likers { get; set; }
+        public virtual ICollection<Like> Likees { get; set; }
+        public virtual ICollection<Message> MessagesSent { get; set; }
+        public virtual ICollection<Message> MessagesRecieved { get; set; }
     }
 }
