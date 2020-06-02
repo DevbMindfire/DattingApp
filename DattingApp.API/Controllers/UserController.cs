@@ -12,7 +12,6 @@ using DattingApp.API.Model;
 namespace DattingApp.API.Controllers
 {
      
-     [Authorize]
      [ServiceFilter(typeof(LogUserActivity))]
      [ApiController]
      [Route("api/[controller]")]

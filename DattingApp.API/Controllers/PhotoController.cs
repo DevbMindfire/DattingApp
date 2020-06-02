@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace DattingApp.API.Controllers
 {
-     [Authorize, Route("api/User/{userId}/photos"),ApiController]
+     [Route("api/User/{userId}/photos"),ApiController]
      public class PhotoController : ControllerBase
      {
           public IDattingRepository _repository { get; }

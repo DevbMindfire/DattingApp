@@ -21,8 +21,8 @@ namespace DattingApp.API.Data.Repository
                if(user==null)
                 return null;
 
-               if(!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt)) 
-                return null;
+               // if(!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt)) 
+               //  return null;
 
                return user;
 
@@ -47,8 +47,8 @@ namespace DattingApp.API.Data.Repository
           {
                byte[] passwrodHash,passwordSalt;
                CreatePasswordHash(password,out passwrodHash,out passwordSalt);
-               user.PasswordHash=passwrodHash;
-               user.PasswordSalt=passwordSalt;
+               // user.PasswordHash=passwrodHash;
+               // user.PasswordSalt=passwordSalt;
 
                await _context.Users.AddAsync(user);
                await _context.SaveChangesAsync();

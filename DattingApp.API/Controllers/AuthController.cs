@@ -10,39 +10,44 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace DattingApp.API.Controllers
 {
 
-     [ApiController, Route("api/[controller]")]
+     [ApiController, Route("api/[controller]"),AllowAnonymous]
      public class AuthController : ControllerBase
      {
-          private readonly IAuthRepository _repo;
           private readonly IConfiguration _config;
           private readonly IMapper _mapper;
+          private readonly UserManager<User> _userManager;
+          private readonly SignInManager<User> _signInManager;
 
-          public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
+          public AuthController(IAuthRepository repo,
+                                IConfiguration config,
+                                IMapper mapper,
+                                UserManager<User> userManager,
+                                SignInManager<User> signInManager)
           {
                this._config = config;
-               _repo = repo;
                _mapper = mapper;
+               _userManager = userManager;
+               _signInManager = signInManager;
           }
 
           [HttpPost("Register")]
           public async Task<IActionResult> Register(UserRegisterDTO userRegisterDTO)
           {
-
-               userRegisterDTO.UserName = userRegisterDTO.UserName.ToLower();
-
-               if (await _repo.UserExists(userRegisterDTO.UserName)) return BadRequest("User Already Exists");
-
                var UserToCreate = _mapper.Map<User>(userRegisterDTO);
 
-               var CreatedUser = await _repo.Register(UserToCreate, userRegisterDTO.Password);
+               var result = await _userManager.CreateAsync(UserToCreate,userRegisterDTO.Password);
 
-               var userToReturn = _mapper.Map<UserDetailedDTO>(CreatedUser);
+               var userToReturn = _mapper.Map<UserDetailedDTO>(UserToCreate);
 
-               return CreatedAtRoute("GetUser", new {Controller="User", id = CreatedUser.Id},userToReturn);
+               if(!result.Succeeded) return BadRequest(result.Errors);
+
+               return CreatedAtRoute("GetUser", new {Controller="User", id = UserToCreate.Id},userToReturn);
 
           }
 
@@ -51,14 +56,27 @@ namespace DattingApp.API.Controllers
           {
               // throw new Exception("Computer say no");
 
-               var userFromRepo = await _repo.Login(userLoginDTO.UserName.ToLower(), userLoginDTO.Password);
+               var user =  await _userManager.FindByNameAsync(userLoginDTO.UserName);
 
-               if (userFromRepo == null) return Unauthorized();
+               var result = await _signInManager.CheckPasswordSignInAsync(user,userLoginDTO.Password,false);
 
+              
+               if(!result.Succeeded) return Unauthorized();
+
+               
+
+               var appUser = _mapper.Map<UserListDetailedDTO>(user);
+
+               return Ok(new {token=GernateJWTToken(user),user = appUser});
+
+          }
+
+          public string GernateJWTToken(User user){
+               
                var claims = new[]{
-                  new Claim(ClaimTypes.NameIdentifier,userFromRepo.Id.ToString()),
-                  new Claim(ClaimTypes.Name,userFromRepo.UserName)
-              };
+                  new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+                  new Claim(ClaimTypes.Name,user.UserName)
+               };
 
                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
                var creds=new SigningCredentials(key,SecurityAlgorithms.HmacSha512Signature);
@@ -72,10 +90,7 @@ namespace DattingApp.API.Controllers
 
                var token=tokenHandler.CreateToken(tokenDescriptior);
 
-               var user = _mapper.Map<UserListDetailedDTO>(userFromRepo);
-
-               return Ok(new {token=tokenHandler.WriteToken(token),user});
-
+               return tokenHandler.WriteToken(token);
           }
 
      }

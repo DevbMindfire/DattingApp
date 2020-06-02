@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 
 namespace DattingApp.API.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ValueController:ControllerBase

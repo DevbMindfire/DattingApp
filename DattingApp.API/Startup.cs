@@ -21,6 +21,11 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using DattingApp.API.Helpers;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using DattingApp.API.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+
 namespace DattingApp.API
 {
     public class Startup
@@ -54,31 +59,52 @@ namespace DattingApp.API
         public void ConfigureServices(IServiceCollection services)
         {
             
-            services.AddControllers().AddNewtonsoftJson(options =>
-                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                );
+            IdentityBuilder builder = services.AddIdentityCore<User>(opt => {
+                 opt.Password.RequireDigit = false;
+                 opt.Password.RequiredLength = 4;
+                 opt.Password.RequireNonAlphanumeric = false;
+                 opt.Password.RequireUppercase = false;
+            });
+
+            builder = new IdentityBuilder(builder.UserType, typeof(Role) , builder.Services);
+
+            builder.AddEntityFrameworkStores<DataContext>();
+            builder.AddRoleValidator<RoleValidator<Role>>();
+            builder.AddRoleManager<RoleManager<Role>>();
+            builder.AddSignInManager<SignInManager<User>>();
+
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options=>{
+
+                options.TokenValidationParameters=new TokenValidationParameters(){
+                    
+                    ValidateIssuerSigningKey=true,
+                    ValidateIssuer=false,
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
+                    ValidateAudience=false
+
+                };
+            });
+
+            services.AddControllers(options => {
+                    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+
+                    options.Filters.Add(new AuthorizeFilter(policy));
+            })
+            .AddNewtonsoftJson(options =>{
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
             services.AddCors();
             services.Configure<CloudinarySetting>(Configuration.GetSection("CloudinarySettings"));
 
             //Adding Dependency injection in Auth Repository
-            services.AddScoped<IAuthRepository,AuthRepository>();
             services.AddScoped<IDattingRepository,DattingRepository>(); 
             services.AddAutoMapper(typeof(DattingRepository).Assembly);
 
             services.AddScoped<LogUserActivity>();
             //Adding Authorisation
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options=>{
-
-                    options.TokenValidationParameters=new TokenValidationParameters(){
-                        
-                        ValidateIssuerSigningKey=true,
-                        ValidateIssuer=false,
-                        IssuerSigningKey=new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
-                        ValidateAudience=false
-
-                    };
-                });
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

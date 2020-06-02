@@ -22,8 +22,8 @@ namespace DattingApp.API.Controllers
           {
                byte[] passwrodHash,passwordSalt;
                CreatePasswordHash(password,out passwrodHash,out passwordSalt);
-               user.PasswordHash=passwrodHash;
-               user.PasswordSalt=passwordSalt;
+              //  user.PasswordHash=passwrodHash;
+              //  user.PasswordSalt=passwordSalt;
 
                 _repository.Add<User>(user);
                 await _repository.SaveAll();

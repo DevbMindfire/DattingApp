@@ -6,7 +6,7 @@
                  "description": "Package version 1.0.0",
  
                  "files": [
-                     "DattingApp.API/bin/Release/netcoreapp3.1/publish/**"
+                     "/DattingApp.API/bin/Release/netcoreapp3.1/publish/**"
                  ]
              }
          ],
@@ -18,11 +18,11 @@
                  "description": "SFTP folder",
  
                  "host": "161.35.109.149", "port": 22,
-                 "user": "root", "password": "Pa$$w0rd",
+                 "user": "root", "password": "Dev78Bhardwaj",
  
                  "dir": "/var/datingapp",
                  "mappings": {
-                     "DattingApp.API/bin/Release/netcoreapp3.1/publish/**":""
+                     "/DattingApp.API/bin/Release/netcoreapp3.1/publish/**":"/"
                  }
              }
          ]
